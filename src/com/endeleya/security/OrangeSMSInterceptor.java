@@ -6,6 +6,7 @@
 package com.endeleya.security;
 
 import com.endeleya.OrangeSMSFactory;
+import com.endeleya.auth.OnTokenRefreshListener;
 import com.endeleya.util.Token;
 import com.endeleya.auth.OrangeSMSAuth;
 import java.io.IOException;
@@ -21,9 +22,13 @@ import retrofit2.Call;
  */
 public class OrangeSMSInterceptor implements Interceptor {
     private String current_access_token;
+    private OnTokenRefreshListener onTokenRefreshListener;
+    
     public OrangeSMSInterceptor(String current_access_token) {
         this.current_access_token = current_access_token;
     }
+    
+    
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -44,7 +49,8 @@ public class OrangeSMSInterceptor implements Interceptor {
                 System.out.println("Le token recu est = " + t.getAccess_token());
                 req = b.build();
                 resp.close();
-                resp = chain.proceed(req);
+                resp = chain.proceed(req); 
+                refresh(t);
             }
 
         }
@@ -56,5 +62,15 @@ public class OrangeSMSInterceptor implements Interceptor {
             builder.header("Authorization", String.format("Bearer %s", token));
         }
 
+    }
+
+    public void setOnTokenRefreshListener(OnTokenRefreshListener onTokenRefreshListener) {
+        this.onTokenRefreshListener = onTokenRefreshListener;
+    }
+    
+    private void refresh(Token token){
+        if(this.onTokenRefreshListener!=null){
+            this.onTokenRefreshListener.onTokenRefresh(token);
+        }
     }
 }

@@ -5,8 +5,10 @@
  */
 package com.endeleya;
 
+import com.endeleya.auth.OnTokenRefreshListener;
 import com.endeleya.security.OrangeSMSInterceptor;
 import com.endeleya.security.TLSSocketFactory;
+import com.endeleya.util.Token;
 import com.endeleye.core.OrangeSMS;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -26,8 +28,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class OrangeSMSFactory {
 
-    public static final String BASE_URL = "https://api.orange.com/smsmessaging/v1/";
+    public static final String BASE_URL = "https://api.orange.com/smsmessaging/v1/outbound/";
     public static final String BASE_URL_RENEW = "https://api.orange.com/oauth/v3/";
+    
+    private static OnTokenRefreshListener onTokenRefreshListener;
 
     private static Retrofit getRetrofitInstance(String token) {
 
@@ -38,6 +42,12 @@ public class OrangeSMSFactory {
         if (token != null) {
             OrangeSMSInterceptor intercep = new OrangeSMSInterceptor(token);
             builder.addInterceptor(intercep);
+            intercep.setOnTokenRefreshListener(new OnTokenRefreshListener() {
+                @Override
+                public void onTokenRefresh(Token token) {
+                    OrangeSMSFactory.notifytoken(token);
+                }
+            });
         }
         try {
             TLSSocketFactory ssl = new TLSSocketFactory();
@@ -61,6 +71,13 @@ public class OrangeSMSFactory {
     public static OrangeSMS createOrangeSMSService(String token) {
         return (OrangeSMS) getRetrofitInstance(token).create(OrangeSMS.class);
     }
+    
+     private static void notifytoken(Token token) {
+        if (onTokenRefreshListener != null) {
+           onTokenRefreshListener.onTokenRefresh(token);
+        }
+
+    }
 
     public static Retrofit getRefreshInstance() {
         try {
@@ -81,6 +98,10 @@ public class OrangeSMSFactory {
             Logger.getLogger(OrangeSMSFactory.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public static void setOnTokenRefreshListener(OnTokenRefreshListener onTokenRefreshListener) {
+        onTokenRefreshListener = onTokenRefreshListener;
     }
 
 }

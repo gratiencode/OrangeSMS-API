@@ -5,10 +5,17 @@
  */
 package com.endeleye.core;
 
+import com.endeleya.util.SMS;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+
 /**
  *
  * @author eroot
  */
 public interface OrangeSMS {
-    
+  @POST("tel%3A%2B{dev_phone_number}/requests")
+  Call<SMS> sendSms(@Path("dev_phone_number")String dev_phone,@Body SMS sms);
 }
