@@ -27,31 +27,6 @@ public class OutboundSMSTextMessage {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final OutboundSMSTextMessage other = (OutboundSMSTextMessage) obj;
-        if (!Objects.equals(this.message, other.message)) {
-            return false;
-        }
-        return true;
-    }
-    
+    }    
     
 }

@@ -28,10 +28,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class OrangeSMSFactory {
 
-    public static final String BASE_URL = "https://api.orange.com/smsmessaging/v1/outbound/";
+    public static final String BASE_URL = "https://api.orange.com/";///smsmessaging/v1/outbound/{senderAddress}/requests
     public static final String BASE_URL_RENEW = "https://api.orange.com/oauth/v3/";
     
     private static OnTokenRefreshListener onTokenRefreshListener;
+    public static String INITIAL_TOKEN = "JzQK3IyHqXfgxFHcgGIYl4yZE0Zo";
 
     private static Retrofit getRetrofitInstance(String token) {
 

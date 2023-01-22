@@ -14,15 +14,22 @@ import java.util.Objects;
 public class OutboundSMSMessageRequest {
 
     private String address;// "tel:+{{recipient_phone_number}}", \
+    private OutboundSMSTextMessage outboundSMSTextMessage;
     private String senderAddress;//:"tel:+{{dev_phone_number}}", \
     private String senderName;
-    private OutboundSMSTextMessage outboundSMSTextMessage;
+    
 
     public OutboundSMSMessageRequest() {
     }
 
     /**
-     *
+     *klwN2t2ya0Zg2gsmNm2l9w1UqGsG
+     *  "address": "string",
+    "outboundSMSTextMessage": {
+      "message": "string"
+    },
+    "senderAddress": "string",
+    "senderName": "string"
      * @param address
      * @param senderAddress
      */
@@ -45,31 +52,6 @@ public class OutboundSMSMessageRequest {
 
     public void setAddress(String address) {
         this.address = "tel:+" + address;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.address);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final OutboundSMSMessageRequest other = (OutboundSMSMessageRequest) obj;
-        if (!Objects.equals(this.address, other.address)) {
-            return false;
-        }
-        return true;
     }
 
     public OutboundSMSTextMessage getOutboundSMSTextMessage() {
